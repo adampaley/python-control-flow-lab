@@ -38,17 +38,50 @@ print_greeting()
 # - Ensure to provide feedback for non-alphabetical or invalid entries.
 VOWELS = ('a', 'e', 'i', 'o', 'u')
 
-def check_letter(letter):
+def check_letter():
     # Your control flow logic goes here
-    if letter.lower() in VOWELS:
+    letter = input('Enter a letter here: ') 
+    if len(letter) != 1:
+        print("Please limit input to one value.")
+    elif letter.lower() in VOWELS:
         print(f'The letter {letter} is a vowel.')
     elif letter.lower() != letter.upper():
         print(f'The letter {letter} is a consonant')
     else:
         print(f'{letter} is an invalid as it is not a letter.')
-        
-# Call the function
-letter = input('Enter a letter here: ')
-check_letter(letter)
 
+# Call the function
+check_letter()
+
+# Exercise 2: Old enough to vote?
+#
+# Write a Python function named `check_voting_eligibility` that determines if a user is old enough to vote.
+# Fill in the logic to perform the eligibility check inside the function.
+#
+# Function Details:
+# - Prompt the user to input their age: "Please enter your age: "
+# - Validate the input to ensure the age is a possible value (no negative numbers).
+# - Determine if the user is eligible to vote. Set a variable for the voting age.
+# - Print a message indicating whether the user is eligible to vote based on the entered age.
+#
+# Hints:
+# - Use the `input()` function to capture the user's age.
+# - Use `int()` to convert the input to an integer. Ensure to handle any conversion errors gracefully.
+# - Use a conditional statement to check if the age meets the minimum voting age requirement.
+
+def check_voting_eligibility():
+    # Your control flow logic goes here
+    try:
+        age = int(input("Please enter your age: "))
+        if age < 0:
+            print("Invalid Input: Age must be a non-negative numeric value.") # raise Exception("Invalid Input: Age must be a non-negative numeric value.")
+        elif age >= 18:
+            print("Based on minumum age requirements, you are eligible to vote.")
+        else:
+            print("Based on minumum age requirements, you are not eligible to vote.")
+    except: # TypeError:
+        print("Invalid Input: Must enter a numeric value for age.")
+
+# Call the function
+check_voting_eligibility()
 
