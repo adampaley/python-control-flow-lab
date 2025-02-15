@@ -135,32 +135,102 @@
 # Hints:
 # - Use logical operators (`AND`, `OR`, `NOT`) in your if statements to handle multiple conditions.
 
-def weather_advice():
-    # Your control flow logic goes here
-    is_cold = input("Is it cold? Y/N: ").upper()
+# def weather_advice():
+#     # Your control flow logic goes here
+#     is_cold = input("Is it cold? Y/N: ").upper()
     
-    if is_cold not in ("Y", "N"):
-        print('Invalid Input: Please enter "Y" or "N"')
-        return
+#     if is_cold not in ("Y", "N"):
+#         print('Invalid Input: Please enter "Y" or "N"')
+#         return
     
-    is_cold = True if is_cold == "Y" else False
+#     is_cold = True if is_cold == "Y" else False
     
-    is_raining = input("It is raining? Y/N: ").upper()
+#     is_raining = input("It is raining? Y/N: ").upper()
     
-    if is_raining not in ("Y", "N"):
-        print('Invalid Input: Please enter "Y" or "N"')
-        return
+#     if is_raining not in ("Y", "N"):
+#         print('Invalid Input: Please enter "Y" or "N"')
+#         return
     
-    is_raining = True if is_raining == "Y" else False
+#     is_raining = True if is_raining == "Y" else False
 
-    if is_cold and is_raining:
-        print("Wear a waterproof coat.")
-    elif is_cold and not is_raining:
-        print("Wear a warm coat.")
-    elif not is_cold and is_raining:
-        print ("Carry an umbrella.")
-    elif not is_cold and not is_raining:
-        print ("Wear light clothing.")
+#     if is_cold and is_raining:
+#         print("Wear a waterproof coat.")
+#     elif is_cold and not is_raining:
+#         print("Wear a warm coat.")
+#     elif not is_cold and is_raining:
+#         print ("Carry an umbrella.")
+#     elif not is_cold and not is_raining:
+#         print ("Wear light clothing.")
+
+# # Call the function
+# weather_advice()
+
+# Exercise 5: What's the Season?
+#
+# Write a Python function named `determine_season` that figures out the season based on the entered date.
+#
+# Requirements:
+# - The function should first prompt the user to enter the month (as three characters): "Enter the month of the year (Jan - Dec):"
+# - Then, the function should prompt the user to enter the day of the month: "Enter the day of the month:"
+# - Determine the current season based on the date:
+#      - Dec 21 - Mar 19: Winter
+#      - Mar 20 - Jun 20: Spring
+#      - Jun 21 - Sep 21: Summer
+#      - Sep 22 - Dec 20: Fall
+# - Print the season for the entered date in the format: "<Mmm> <dd> is in <season>."
+#
+# Hints:
+# - Use 'in' to check if a string is in a list or tuple.
+# - Adjust the season based on the day of the month when needed.
+# - Ensure to validate input formats and handle unexpected inputs gracefully.
+
+MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+FULL_MONTHS = ("January", "February", "March", "April", "June", "July", "August", "September", "October", "November", "December") # skipping May because already in format
+MONTHS_WITH_31_DAYS = ("Jan", "Mar", "May", "Jul", "Aug", "Oct", "Dec") 
+
+def determine_season():
+    # function calculations limited to the Julian and Gregorian calendars
+    month = input("Enter the month of the year (Jan - Dec): ").strip().capitalize()
+    
+    def trim_months(month):
+        return month[0:3]
+                
+    if month not in MONTHS and month not in FULL_MONTHS:
+        print("Invalid Input: Enter month in Mmm format")
+        return
+    elif month in FULL_MONTHS:
+        month = trim_months(month)
+
+    try: 
+        year = int(input("Enter the year (C.E., add - in front of value if B.C.E): ").strip())
+
+    except ValueError:
+        print("ValueError: Must enter a numeric value for year.")
+    
+    valid_leap_year = (year%100 != 0 and year%4 == 0 ) or (year%400 == 0) if year >= 1582 else (year%4 == 0) if year > -46 else False
+
+    try: 
+        date = int(input("Enter the day of the month: ").strip())
+        if (date < 1) or (date > 31):
+            print("Invalid Input: Dates must be between 1 or 31, inlcusive.")
+            return
+        elif (date > 28 and month == "Feb" and not valid_leap_year) or (date > 29 and month == "Feb" and valid_leap_year) or (date == 31 and month not in MONTHS_WITH_31_DAYS):
+            print("Invalid Input: Not a valid date.")
+            return
+    except ValueError:
+        print("ValueError: Must enter a numeric value for date.")
+
+    def detemine_ordinal_suffix(date):
+        return 'st' if date in (1, 21, 31) else 'nd' if date in (2, 22) else 'rd' if date in (3, 23) else 'th'
+    
+    if (month in ("Jan", "Feb")) or (month == "Dec" and date >= 21) or (month == "Mar" and date <= 19):
+        print(f"{month} {date}{detemine_ordinal_suffix(date)} is in Winter")
+    elif (month in ("Apr", "May")) or (month == "Mar" and date >= 20) or (month == "Jun" and date <= 20):
+        print(f"{month} {date}{detemine_ordinal_suffix(date)} is in Spring")
+    elif (month in ("Jul", "Aug")) or (month == "Jun" and date >= 21) or (month == "Sep" and date <= 21):
+        print(f"{month} {date}{detemine_ordinal_suffix(date)} is in Summer")
+    else:
+        print(f"{month} {date}{detemine_ordinal_suffix(date)} is in Fall")
 
 # Call the function
-weather_advice()
+determine_season()
